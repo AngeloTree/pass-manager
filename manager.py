@@ -2,6 +2,9 @@ from dotenv import load_dotenv
 import os
 import psycopg2
 import psycopg2.extras
+import logging
+
+logger = logging.getLogger(__name__)
 
 # PostgreSQL DB #
 DB_HOST = "localhost"
@@ -16,15 +19,19 @@ def get_connection():
 def login():
     with get_connection() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            cursor.execute(f"""
-                CREATE TABLE manager (
-                    id serial PRIMARY KEY,
-                    site VARCHAR (255),
-                    username VARCHAR (255),
-                    password VARCHAR (255)
-                    )
-                    """)
-            print('done')
+            try:
+                cursor.execute(f"""
+                    CREATE TABLE manager (
+                        id serial PRIMARY KEY,
+                        site VARCHAR (255),
+                        username VARCHAR (255),
+                        password VARCHAR (255)
+                        )
+                        """)
+                print('done')
+            except psycopg2.errors.DuplicateTable as e:
+                logger.exception(e)
+                print('A error has occured')
 
 
 load_dotenv('.env')
