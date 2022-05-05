@@ -16,6 +16,16 @@ def get_connection():
    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
    return conn
 
+
+def create_info():
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            site = input('Site name: ')
+            site_user = input('User name for that site: ')
+            site_pass = input('Password for that site: ')
+            cursor.execute(f"INSERT INTO manager (site, username, password) VALUES ('{site}', '{site_user}', '{site_pass}')")
+            print('Info created')
+
 def login():
     with get_connection() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -28,10 +38,11 @@ def login():
                         password VARCHAR (255)
                         )
                         """)
-                print('done')
+                print('DataBase Created.')
             except psycopg2.errors.DuplicateTable as e:
                 logger.exception(e)
-                print('A error has occured')
+                print('DataBase already created.')
+                create_info()
 
 
 load_dotenv('.env')
