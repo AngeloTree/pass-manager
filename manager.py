@@ -7,6 +7,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+## WORKING ON PROGRAM REVAMP USING OOP
+
 # PostgreSQL DB #
 DB_HOST = "localhost"
 DB_NAME = "sandbox"
