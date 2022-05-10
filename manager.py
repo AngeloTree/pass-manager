@@ -65,30 +65,23 @@ def main_menu():
     menu_choice = input("Would you like to create, read, update, or delete? (Type one of the following - C,R,U,D) Or E to Exit: ")
     return menu_choice.lower()
 
+
 while True:
     if pass_word == secret_pass:
         if current_user == None:
             print('created ONLY')
             current_user = Manager()
             current_user.create_data()
+            crud_input = {
+                'c' : current_user.create_info,
+                'r' : 'r blank',
+                'u' : 'u blank',
+                'd' : 'd blank'   
+                }
         choice_return = main_menu()
-        if choice_return == 'c':
-            print('c')
-            current_user.create_info()
-            continue
-        elif choice_return == 'r':
-            print('test')
-            print('r')
-            continue
-        elif choice_return == 'u':
-            print('u')
-            continue
-        elif choice_return == 'd':
-            print('r')
-            continue
-        elif choice_return == 'e':
-            print('e')
-            break
+        for x, y in crud_input.items():
+            if choice_return == x:
+                crud_input[x]()
     elif pass_word != secret_pass:
         pass_word = input('Please Enter your Pass: ')
         if pass_word != secret_pass:
