@@ -7,6 +7,7 @@ from h11 import Data
 import psycopg2
 import psycopg2.extras
 import logging
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +83,8 @@ while True:
         for x, y in crud_input.items():
             if choice_return == x:
                 crud_input[x]()
+            elif choice_return == 'e':
+                sys.exit("PROGRAM SHUTTING DOWN")
     elif pass_word != secret_pass:
         pass_word = input('Please Enter your Pass: ')
         if pass_word != secret_pass:
