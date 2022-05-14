@@ -54,6 +54,16 @@ class Manager(Database):
                 cursor.execute(f"INSERT INTO manager (site, username, password) VALUES ('{site}', '{site_user}', '{site_pass}')")
                 print('Info created')
 
+    def read_info(self):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                site = input('Type in a site you like to view the login info to:  ')
+                cursor.execute(f"SELECT * FROM manager WHERE site = '{site}'")
+                b = cursor.fetchall()
+                print(f'Site: {site}, User: {b[0][2]}, Pass: {b[0][3]}')
+                # site_user = cursor.fetchone()['username']
+                # site_pass = cursor.fetchone()['password']
+                # print(f"Site: {site}, User: {site_user}, Pass: {site_pass}")
 
 # A While loop to enter the correct password to enter the DataBase which then sends you to database_creation()
 load_dotenv('.env')
@@ -75,7 +85,7 @@ while True:
             current_user.create_data()
             crud_input = {
                 'c' : current_user.create_info,
-                'r' : 'r blank',
+                'r' : current_user.read_info,
                 'u' : 'u blank',
                 'd' : 'd blank'   
                 }
