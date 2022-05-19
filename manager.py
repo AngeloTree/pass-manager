@@ -65,6 +65,20 @@ class Manager(Database):
                 # site_pass = cursor.fetchone()['password']
                 # print(f"Site: {site}, User: {site_user}, Pass: {site_pass}")
 
+    def update_info(self):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                site = input('Type in a site you like to change the login info to:  ')
+                choice_input = input('Do you want to update the username or password (u/p): ')
+                if choice_input == 'u':
+                    updated_user = input('Type the user in: ')
+                    cursor.execute(f"UPDATE manager SET username = '{updated_user}' WHERE site = '{site}'")
+                elif choice_input == 'p':
+                    updated_password = input('Type the password in: ')
+                    cursor.execute(f"UPDATE manager SET password = '{updated_password}' WHERE site = '{site}'")
+                else:
+                    print("That doesn't exist.")
+
 # A While loop to enter the correct password to enter the DataBase which then sends you to database_creation()
 load_dotenv('.env')
 secret_pass = os.getenv('MANAGER_PASS_WORD')
@@ -86,7 +100,7 @@ while True:
             crud_input = {
                 'c' : current_user.create_info,
                 'r' : current_user.read_info,
-                'u' : 'u blank',
+                'u' : current_user.update_info,
                 'd' : 'd blank'   
                 }
         choice_return = main_menu()
