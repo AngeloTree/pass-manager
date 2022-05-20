@@ -8,7 +8,6 @@ I always thought to my self that why not create a way to manage all the password
 ```
 Python3
 PostgreSQL
-
 ```
 
 ## How to use?
