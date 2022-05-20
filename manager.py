@@ -79,6 +79,12 @@ class Manager(Database):
                 else:
                     print("That doesn't exist.")
 
+    def delete_info(self):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                site = input('Type in a site of the information you like to delete: ')
+                cursor.execute(f"DELETE FROM manager WHERE site = '{site}'")
+
 # A While loop to enter the correct password to enter the DataBase which then sends you to database_creation()
 load_dotenv('.env')
 secret_pass = os.getenv('MANAGER_PASS_WORD')
@@ -101,7 +107,7 @@ while True:
                 'c' : current_user.create_info,
                 'r' : current_user.read_info,
                 'u' : current_user.update_info,
-                'd' : 'd blank'   
+                'd' : current_user.delete_info   
                 }
         choice_return = main_menu()
         for x, y in crud_input.items():
